@@ -1,6 +1,5 @@
 package com.ack.util;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -10,17 +9,16 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import java.io.IOException;
 import java.util.Properties;
 
+
 /**
- * desc: 配置文件读取通用类
- * <p>创建人：唐贵斌 创建日期：2014年5月25日 </p>
- * @version V1.0
+ * add by zhaopengcheng
  */
 public final class PropertiesUtils {
     private static final Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
     //文件路径
-    private static final String[] CFG_PATHS = new String[]{"application.properties"};
+    private static final String[] CFG_PATHS = new String[]{"/config.properties"};
     //实例
-    private static PropertiesUtils instance;
+    private static volatile PropertiesUtils instance;
 
     private Resource resource = null;
     private Properties props = null;
@@ -49,7 +47,7 @@ public final class PropertiesUtils {
     /*
      * 检查实例
      */
-    private static synchronized void checkInstance() {
+    private static void checkInstance() {
         if (instance == null) {
             synchronized (CFG_PATHS) {
                 if (instance == null) {
@@ -72,17 +70,6 @@ public final class PropertiesUtils {
         return instance.props.getProperty(key);
     }
 
-    /**
-     *
-     * desc: 修改配置信息
-     * <p>创建人：唐贵斌 , 2014年5月25日 下午1:12:50</p>
-     * @param key
-     * @return
-     */
-    public static void setProperty(String key, String value) {
-        checkInstance();
-        instance.props.setProperty(key, value);
-    }
 
     /**
      *
