@@ -13,8 +13,8 @@ import com.ack.util.DateUtil;
 
 
 /**
- * 转赠日流水号，生成服务
- * @author chen.zhao @DATE: Apr 23, 2018 
+ * 业务流水号，生成服务
+ * @author chen.zhao @DATE: Aug 2, 2018
  */
 public class BusinessesFlowNum {
 	

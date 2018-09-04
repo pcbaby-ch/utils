@@ -37,6 +37,6 @@ public class AspectLog {
 
     @AfterReturning(returning = "obj",pointcut = "cut()")
     public void doAfterReturning(Object obj){
-        log.info(">>>method return:[{}]    [{}]",obj);
+        log.info(">>>method return:[{}]",obj);
     }
 }
