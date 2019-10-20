@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * AOP 日志记录
- * @author chen.zhao @DATE: May 16, 2018
+ *  AOP 日志记录
+ * @author chenzhao @date Oct 16, 2019
  */
 @Aspect
 @Component
@@ -20,7 +20,7 @@ public class AspectLog {
 
     private  Logger log = LoggerFactory.getLogger(AspectLog.class);
 
-    @Pointcut("execution(public * com.cloudplatform..*.service..*.*(..))")//要处理的方法，包名+类名+方法名
+    @Pointcut("execution(public * com.ems.service.*.*(..))")//要处理的方法，包名+类名+方法名
     public void cut(){
     }
 
@@ -37,6 +37,6 @@ public class AspectLog {
 
     @AfterReturning(returning = "obj",pointcut = "cut()")
     public void doAfterReturning(Object obj){
-        log.info(">>>method return:[{}]",obj);
+        log.info(">>>method return:[{}]    [{}]",obj);
     }
 }

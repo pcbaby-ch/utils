@@ -1,6 +1,6 @@
 package com.ack.config;
 
-import com.ack.util.PropertiesUtils;
+import com.ack.utils.PropertiesUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Predicate;

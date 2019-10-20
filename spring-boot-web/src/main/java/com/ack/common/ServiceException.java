@@ -4,8 +4,7 @@ import com.ack.enums.RespCode;
 
 /**
  * 业务异常
- * 
- * @author chen.zhao (chenzhao) @DATE: 2018年3月5日
+ * @author chenzhao @date Oct 16, 2019
  */
 public class ServiceException extends RuntimeException {
 	private static final long serialVersionUID = 3653415555548581494L;

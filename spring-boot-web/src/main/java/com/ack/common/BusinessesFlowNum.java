@@ -3,74 +3,54 @@
  */
 package com.ack.common;
 
-
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.ack.config.RedisPool;
 import com.ack.enums.RespCode;
-import com.ack.util.DateUtil;
-
 
 /**
  * 业务流水号，生成服务
- * @author chen.zhao @DATE: Aug 2, 2018
+ * @author chenzhao @date Oct 16, 2019
  */
 public class BusinessesFlowNum {
-	
-	private static String redisNumKey	="pointsPresent_txnOrderSeq";
-	private static String redisRpidKey = "pointsPresent_rpid";
-	
-	static ReentrantLock lock=new ReentrantLock();
-	
+
+	static ReentrantLock lock = new ReentrantLock();
+
+	/**
+	 * 
+	 * @author chenzhao @date Nov 28, 2018
+	 * @param prefix     流水号前缀
+	 * @param flowNumKey 流水号redis缓存key {不同流水号使用不同key，防止重复}
+	 * @return
+	 * @throws Exception
+	 */
 	@SuppressWarnings("deprecation")
-	public static  String getNum() throws Exception{
-		Long flowNum=1L;
-		Date dt=new Date();
+	public static String getNum(String prefix, String flowNumKey) throws Exception {
+		Long flowNum = 1L;
+		Date dt = new Date();
 		dt.setHours(23);
 		dt.setMinutes(59);
 		dt.setSeconds(59);
-		
+
 		try {
 			lock.lock();
-			if(RedisPool.exists(redisNumKey)){
-				flowNum=RedisPool.incr(redisNumKey);
-				RedisPool.pexpireAt(redisNumKey, dt.getTime());
-			}else{
+			if (RedisPool.exists(flowNumKey)) {
+				flowNum = RedisPool.incr(flowNumKey);
+				if (new Date().getHours() != 23) {// 除23点不更新，其它时间更新redis超时时间{防止缓存超时时间穿透到第2天}
+					RedisPool.pexpireAt(flowNumKey, dt.getTime());
+				}
+			} else {
 //				RedisPool.set(redisNumKey, Integer.parseInt(DateUtil.calcInterval(new Date(),dt)/1000+""), 1);
-				RedisPool.set(redisNumKey, 1);
-				RedisPool.pexpireAt(redisNumKey, dt.getTime());
+				RedisPool.set(flowNumKey, 1);
+				RedisPool.pexpireAt(flowNumKey, dt.getTime());
 			}
 		} catch (Exception e) {
 			throw new ServiceException(RespCode.FAILURE);
-		}finally {
+		} finally {
 			lock.unlock();
 		}
-		return "P"+DateUtil.dfyyyyMMdd.format(new Date())+String.format("%08d", flowNum);
-	}
-
-	@SuppressWarnings("deprecation")
-	public static  String getRpid() throws Exception{
-		Long flowNum=1L;
-		Date dt=new Date();
-		dt.setHours(23);
-		dt.setMinutes(59);
-		dt.setSeconds(59);
-
-		try {
-			lock.lock();
-			if(RedisPool.exists(redisRpidKey)){
-				flowNum=RedisPool.incr(redisRpidKey);
-			}else{
-				RedisPool.set(redisRpidKey, Integer.parseInt(DateUtil.calcInterval(new Date(),dt)/1000+""), 1);
-			}
-		} catch (Exception e) {
-			throw new ServiceException(RespCode.FAILURE);
-		}finally {
-			lock.unlock();
-		}
-		String date = DateUtil.dfyyyyMMdd.format(new Date());
-		return "R"+date+String.format("%08d", flowNum).substring(2,date.length());
+		return prefix + new SimpleDateFormat("yyyyMMdd").format(new Date()) + String.format("%08d", flowNum);
 	}
 
 }
