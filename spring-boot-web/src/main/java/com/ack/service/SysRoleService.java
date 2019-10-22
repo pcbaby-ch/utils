@@ -6,6 +6,7 @@ package com.ack.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -46,7 +47,13 @@ public class SysRoleService {
 		}
 		// #设置变更人
 		setLoginUser(sysRole, token);
-		return sysRoleMapper.insert(sysRole) > 0;
+		int count;
+		try {
+			count = sysRoleMapper.insert(sysRole);
+		} catch (DuplicateKeyException e) {
+			throw new ServiceException(RespCode.role_exists);
+		}
+		return count > 0;
 	}
 
 	public boolean update(SysRole sysRole, String token) {
@@ -55,7 +62,8 @@ public class SysRoleService {
 		}
 		// #设置变更人
 		setLoginUser(sysRole, token);
-		return sysRoleMapper.update(sysRole) > 0;
+		int count = sysRoleMapper.update(sysRole);
+		return count > 0;
 	}
 
 	public boolean delete(long id) {

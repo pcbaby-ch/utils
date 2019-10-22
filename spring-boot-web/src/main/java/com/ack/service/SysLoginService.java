@@ -40,6 +40,13 @@ public class SysLoginService {
 		// 验证旧密码正确性:
 		SysUser oldSysUser = sysUserMapper.selectOne4Login(sysUser.getUserName(), sysUser.getPhoneNumber());
 		if (oldSysUser != null && sysUser.getPassword().equals(oldSysUser.getPassword())) {
+			if ("0".equals(oldSysUser.getStatus())) {
+				throw new ServiceException(RespCode.user_islimited);
+			}
+			if (1 == oldSysUser.getIsDel()) {
+				throw new ServiceException(RespCode.user_isDeleted);
+			}
+
 			// 配置登录session-token
 			String loginToken = UUID.randomUUID().toString().replaceAll("-", "");
 			// 获取用户角色&权限数据
@@ -54,6 +61,7 @@ public class SysLoginService {
 			RedisPool.set(RedisCons.loginToken + loginToken,
 					Integer.parseInt(PropertiesUtils.getProperty("loginSessionTimeout", "86400")), oldSysUser);
 			oldSysUser.setToken(loginToken);
+			oldSysUser.setPassword(null);
 			return oldSysUser;
 		} else {
 			throw new ServiceException(RespCode.user_pwd_error);

@@ -28,7 +28,7 @@ public interface SysUserMapper {
 	+ "</where></script>")
 	public List<SysUser> selectList();
 
-	@Select(value = "<script>select `id`,`user_name`,`name`,`title`,`phone_number`,`email`,`status`,`ref_role_ids`"
+	@Select(value = "<script>select `id`,`user_name`,`password`,`name`,`title`,`phone_number`,`email`,`status`,`ref_role_ids`"
 	+ " from sys_user" + "<where>" 
 	+ " and `id` = #{id} " + "</where></script>")
 	public SysUser selectOne(@Param(value = "id") Long id);

@@ -39,7 +39,8 @@ public class SysRoleCtl {
 	 */
 	@RequestMapping("role/list")
 	@CheckSign
-	public Object selectList(@RequestHeader("version") String version, @RequestBody JSONObject req) {
+	public Object selectList(@RequestHeader("version") String version, @RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		Page<?> page = PageHelper.startPage(req.getIntValue("pageNum"), req.getIntValue("pageSize"));
 		sysRoleService.selectList();
 		return RespUtil.listResp(page);
@@ -56,7 +57,8 @@ public class SysRoleCtl {
 	@RequestMapping("role/detail")
 	@CheckSign
 	public Object selectOne(@RequestHeader("version") String version, @RequestHeader("token") String token,
-			@RequestBody JSONObject req) {
+			@RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		return RespUtil.dataResp(sysRoleService.selectOne(req.getLongValue("id")));
 	}
 
@@ -71,7 +73,8 @@ public class SysRoleCtl {
 	@RequestMapping("role/add")
 	@CheckSign
 	public Object insert(@RequestHeader("version") String version, @RequestHeader("token") String token,
-			@RequestBody JSONObject req) {
+			@RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		return RespUtil.baseResp(sysRoleService.insert(JSONObject.toJavaObject(req, SysRole.class), token));
 	}
 
@@ -86,7 +89,8 @@ public class SysRoleCtl {
 	@RequestMapping("role/edit")
 	@CheckSign
 	public Object update(@RequestHeader("version") String version, @RequestHeader("token") String token,
-			@RequestBody JSONObject req) {
+			@RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		return RespUtil.baseResp(sysRoleService.update(JSONObject.toJavaObject(req, SysRole.class), token));
 	}
 
@@ -100,7 +104,8 @@ public class SysRoleCtl {
 	 */
 	@RequestMapping("role/delete")
 	@CheckSign
-	public Object delete(@RequestHeader("version") String version, @RequestBody JSONObject req) {
+	public Object delete(@RequestHeader("version") String version, @RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		return RespUtil.baseResp(sysRoleService.delete(req.getLongValue("id")));
 	}
 

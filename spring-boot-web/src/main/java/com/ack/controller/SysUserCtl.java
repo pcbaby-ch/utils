@@ -38,7 +38,8 @@ public class SysUserCtl {
 	 */
 	@RequestMapping("user/list")
 	@CheckSign
-	public Object selectList(@RequestHeader("version") String version, @RequestBody JSONObject req) {
+	public Object selectList(@RequestHeader("version") String version, @RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		Page<?> page = PageHelper.startPage(req.getIntValue("pageNum"), req.getIntValue("pageSize"));
 		sysUserService.selectList();
 		return RespUtil.listResp(page);
@@ -54,7 +55,8 @@ public class SysUserCtl {
 	 */
 	@RequestMapping("user/detail")
 	@CheckSign
-	public Object selectOne(@RequestHeader("version") String version, @RequestBody JSONObject req) {
+	public Object selectOne(@RequestHeader("version") String version, @RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		return RespUtil.dataResp(sysUserService.selectOne(req.getLongValue("id")));
 	}
 
@@ -69,7 +71,8 @@ public class SysUserCtl {
 	@RequestMapping("user/add")
 	@CheckSign
 	public Object insert(@RequestHeader("version") String version, @RequestHeader("token") String token,
-			@RequestBody JSONObject req) {
+			@RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		return RespUtil.baseResp(sysUserService.insert(JSONObject.toJavaObject(req, SysUser.class), token));
 	}
 
@@ -84,7 +87,8 @@ public class SysUserCtl {
 	@RequestMapping("user/edit")
 	@CheckSign
 	public Object update(@RequestHeader("version") String version, @RequestHeader("token") String token,
-			@RequestBody JSONObject req) {
+			@RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		return RespUtil.baseResp(sysUserService.update(JSONObject.toJavaObject(req, SysUser.class), token));
 	}
 
@@ -99,7 +103,8 @@ public class SysUserCtl {
 	@RequestMapping("user/delete")
 	@CheckSign
 	public Object delete(@RequestHeader("version") String version, @RequestHeader("token") String token,
-			@RequestBody JSONObject req) {
+			@RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		SysUser sysUser = new SysUser();
 		sysUser.setId(req.getLongValue("id"));
 		sysUser.setIsDel(1);
@@ -117,7 +122,8 @@ public class SysUserCtl {
 	@RequestMapping("user/update4role")
 	@CheckSign
 	public Object update4role(@RequestHeader("version") String version, @RequestHeader("token") String token,
-			@RequestBody JSONObject req) {
+			@RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		return RespUtil.baseResp(sysUserService.update4role(JSONObject.toJavaObject(req, SysUser.class), token));
 	}
 
@@ -132,7 +138,8 @@ public class SysUserCtl {
 	@RequestMapping("user/resetPwd")
 	@CheckSign
 	public Object resetPwd(@RequestHeader("version") String version, @RequestHeader("token") String token,
-			@RequestBody JSONObject req) {
+			@RequestBody String reqStr) {
+		JSONObject req = JSONObject.parseObject(reqStr);
 		return RespUtil.baseResp(sysUserService.resetPwd(req, token));
 	}
 

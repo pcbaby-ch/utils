@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ack.service.SysLoginService;
-import com.ack.utils.RespUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.ack.config.annotation.CheckSign;
+import com.ack.entity.SysRole;
 import com.ack.entity.SysUser;
+import com.ack.service.SysLoginService;
+import com.ack.utils.RespUtil;
 
 /**
  * 系统登录
@@ -37,8 +38,8 @@ public class SysLoginCtl {
 	 */
 	@RequestMapping("user/login")
 	@CheckSign(isCheckLogin = false)
-	public Object login(@RequestHeader("version") String version, @RequestBody JSONObject req) {
-		return RespUtil.dataResp(sysLoginService.userLogin(JSONObject.toJavaObject(req, SysUser.class)));
+	public Object login(@RequestHeader("version") String version, @RequestBody String req) {
+		return RespUtil.dataResp(sysLoginService.userLogin(JSONObject.parseObject(req, SysUser.class)));
 	}
 
 	/**

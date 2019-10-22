@@ -87,6 +87,8 @@ public class SysUserService {
 	}
 
 	public boolean update(SysUser sysUser, String token) {
+		sysUser.setPassword(null);
+		sysUser.setRefRoleIds(null);//防止利用用户编辑改密码和权限
 		if (sysUser.getId() == 0) {
 			throw new ServiceException(RespCode.PARAM_INCOMPLETE, "id");
 		}
@@ -129,7 +131,7 @@ public class SysUserService {
 		if (StringUtils.isEmpty(newPwd) || StringUtils.isEmpty(originPwd)) {
 			throw new ServiceException(RespCode.PARAM_INCOMPLETE, "newPwd,originPwd");
 		}
-		if (CheckUtil.isPwd(newPwd)) {
+		if (!CheckUtil.isPwd(newPwd)) {
 			throw new ServiceException(RespCode.user_pwd_formatError, ",必须包含大小写字母和数字的8~20位组合");
 		}
 		SysUser sysUser = new SysUser();
@@ -147,6 +149,10 @@ public class SysUserService {
 			throw new ServiceException(RespCode.user_pwd_error);
 		}
 
+	}
+
+	public static void main(String[] args) {
+		System.out.println(CheckUtil.isPwd("12345623456"));
 	}
 
 }

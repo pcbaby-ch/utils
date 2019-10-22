@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import com.ack.entity.SysRole;
 
-
 /**
  * 
  * @author chenzhao @date Oct 18, 2019
@@ -35,7 +34,7 @@ public interface SysRoleMapper {
 			public SysRole selectOne(@Param(value = "id") Long id);
 
 			@Insert(value = "INSERT INTO sys_role" 
-			+ " (`role_name`,`permissions`,`create_time`,`last_update_user`,`last_update_time`) " 
+			+ " (`role_name`,`permissions`,`create_user`,`create_time`,`last_update_user`,`last_update_time`) " 
 			+ " VALUES (#{roleName},#{permissions},#{createUser},NOW(),#{createUser},NOW())")
 			public int insert(SysRole sysRole);
 
@@ -47,7 +46,7 @@ public interface SysRoleMapper {
 			+ "</script>")
 			public int update(SysRole sysRole);
 			
-			@Delete(value = "DELETE from sys_user where `id`=#{id}")
+			@Delete(value = "DELETE from sys_role where `id`=#{id}")
 			public int delete(@Param(value = "id") Long id);
 
 }
