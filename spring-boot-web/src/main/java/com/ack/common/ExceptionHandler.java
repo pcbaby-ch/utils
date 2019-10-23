@@ -16,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 
 @Component
@@ -62,15 +64,23 @@ public class ExceptionHandler implements HandlerExceptionResolver {
 	}
 
 	public void errorNotifications(Exception e) {
+		InetAddress address = null;
+		try {
+			address = InetAddress.getLocalHost();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
 		if (e instanceof ServiceException) {
 			if ("true".equals(businessError)) {
-				mailService.sendSimpleMail(logNotificationMan.split(","), "业务异常告警",
+				mailService.sendSimpleMail(logNotificationMan.split(","),
+						address == null ? "" : address.getHostAddress() + "业务异常告警",
 						(StringUtils.isEmpty(((ServiceException) e).getMsg()) ? ((ServiceException) e).getMessage()
 								: ((ServiceException) e).getMsg()));
 			}
 		} else {
 			if ("true".equals(systemError)) {
-				mailService.sendSimpleMail(logNotificationMan.split(","), "系统异常告警", e.getMessage());
+				mailService.sendSimpleMail(logNotificationMan.split(","),
+						address == null ? "" : address.getHostAddress() + "系统异常告警", e.getMessage());
 			}
 		}
 	}
