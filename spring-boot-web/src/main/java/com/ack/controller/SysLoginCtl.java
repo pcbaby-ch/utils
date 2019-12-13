@@ -14,6 +14,7 @@ import com.ack.config.annotation.CheckSign;
 import com.ack.entity.SysRole;
 import com.ack.entity.SysUser;
 import com.ack.service.SysLoginService;
+import com.ack.utils.DateUtil;
 import com.ack.utils.RespUtil;
 
 /**
@@ -27,6 +28,11 @@ public class SysLoginCtl {
 
 	@Autowired
 	SysLoginService sysLoginService;
+
+	@RequestMapping("hello")
+	public String hello() {
+		return "hello" + System.currentTimeMillis();
+	}
 
 	/**
 	 * 用户登录
