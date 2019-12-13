@@ -31,7 +31,7 @@ public class SysLoginCtl {
 
 	@RequestMapping("hello")
 	public String hello() {
-		return "hello" + System.currentTimeMillis();
+		return "hello webhook" + System.currentTimeMillis();
 	}
 
 	/**
