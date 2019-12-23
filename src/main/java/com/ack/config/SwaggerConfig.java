@@ -38,8 +38,6 @@ import java.util.List;
 public class SwaggerConfig extends WebMvcConfigurerAdapter {
 
 
-    private static final Contact contact = new Contact("赵鹏程", "", "zhao.pengcheng@cenntchain.com");
-
     private String swaggerSwitch = PropertiesUtils.getProperty("swagger.switch","0");
 
     private Predicate<String> select = "1".equalsIgnoreCase(swaggerSwitch) ? PathSelectors.any() : PathSelectors.none();
@@ -93,7 +91,6 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
         return new ApiInfoBuilder()
                 .title("积分转赠相关接口")
                 .description("本文档描述了积分转赠相关部分的接口文档")
-                .contact(contact)
                 .version("1.0.1")
                 .build();
     }
